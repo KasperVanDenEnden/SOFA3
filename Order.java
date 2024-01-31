@@ -8,6 +8,7 @@ public class Order {
     public Order(int orderNr, boolean isStudentOrder) {
         this.orderNr = orderNr;
         this.isStudentOrder = isStudentOrder;
+        this.movieTickets = new ArrayList<MovieTicket>();
     }
 
     public int getOrderNr() {
@@ -29,6 +30,31 @@ public class Order {
     }
 
     public void export(TicketExportFormat exportFormat) {
-        
+        switch (exportFormat) {
+            case JSON:
+                exportToJson();
+                break;
+            case PLAIN_TEXT:
+                exportToPlainText();
+                break;
+            default:
+            System.out.println("Unsupported export format");
+        }
+    }
+
+    private void exportToPlainText() {
+        String plainText = "Order Number: " + this.orderNr + "\n";
+        plainText += "Is Student Order: " + this.isStudentOrder + "\n";
+        plainText += "Movie Tickets:\n";
+        for (MovieTicket ticket : this.movieTickets) {
+            plainText += "  " + ticket.toString() + "\n";
+        }
+
+        System.out.println(plainText);
+    }
+
+    private void exportToJson() {
+
+
     }
 }
