@@ -1,1 +1,27 @@
-"com.sofa.cinema.Order@4d23015c"
+{
+  "orderNr" : 1,
+  "isStudentOrder" : true,
+  "movieTickets" : [ {
+    "rowNr" : 7,
+    "seatNr" : 8,
+    "isPremium" : true,
+    "screening" : {
+      "dateAndTime" : [ 2024, 2, 4, 20, 29, 22, 956409900 ],
+      "pricePerSeat" : 5.5
+    },
+    "price" : 5.5,
+    "dateAndTime" : [ 2024, 2, 4, 20, 29, 22, 956409900 ],
+    "premiumTicket" : true
+  }, {
+    "rowNr" : 7,
+    "seatNr" : 9,
+    "isPremium" : true,
+    "screening" : {
+      "dateAndTime" : [ 2024, 2, 4, 20, 29, 22, 956409900 ],
+      "pricePerSeat" : 5.5
+    },
+    "price" : 5.5,
+    "dateAndTime" : [ 2024, 2, 4, 20, 29, 22, 956409900 ],
+    "premiumTicket" : true
+  } ]
+}

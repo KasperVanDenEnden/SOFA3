@@ -1,7 +1,11 @@
 package com.sofa.cinema;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+
 import java.time.LocalDateTime;
 
+
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class MovieTicket {
     private Integer rowNr;
     private Integer seatNr;

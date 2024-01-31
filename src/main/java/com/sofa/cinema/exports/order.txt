@@ -1,4 +1,5 @@
 Order Number: 1
 Is Student Order: true
 Movie Tickets:
-  Row: 5& Seat: 6(Premium: false)
+  Row: 7& Seat: 8(Premium: true)
+  Row: 7& Seat: 9(Premium: true)

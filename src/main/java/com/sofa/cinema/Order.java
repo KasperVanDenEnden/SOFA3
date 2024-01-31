@@ -1,11 +1,14 @@
 package com.sofa.cinema;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.ArrayList;
 
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class Order {
     private int orderNr;
     private boolean isStudentOrder;
@@ -75,28 +78,25 @@ public class Order {
     }
 
     private void exportToPlainText() throws Exception {
-        try {
-            String plainText = "Order Number: " + this.orderNr + "\n";
-            plainText += "Is Student Order: " + this.isStudentOrder + "\n";
-            plainText += "Movie Tickets:\n";
+        try (BufferedWriter br = new BufferedWriter(new FileWriter("src/main/java/com/sofa/cinema/exports/order.txt"))){
+            StringBuilder plainText = new StringBuilder("Order Number: " + this.orderNr + "\n");
+            plainText.append("Is Student Order: ").append(this.isStudentOrder).append("\n");
+            plainText.append("Movie Tickets:\n");
             for (MovieTicket ticket : this.movieTickets) {
-                plainText += "  " + ticket.toString() + "\n";
+                plainText.append("  ").append(ticket.toString()).append("\n");
             }
-
-            BufferedWriter br = new BufferedWriter(new FileWriter("src/main/java/com/sofa/cinema/exports/order.txt"));
-            br.write(plainText);
-            br.close();
+            br.write(plainText.toString());
         } catch (Exception e) {
             throw new Exception(e);
         }
     }
 
     private void exportToJson() throws Exception {
-        try {
-            Gson gson = new Gson();
-            FileWriter writer = new FileWriter("src/main/java/com/sofa/cinema/exports/order.json");
-            gson.toJson(this.toString(), writer);
-            writer.close();
+        try (FileWriter writer = new FileWriter("src/main/java/com/sofa/cinema/exports/order.json")){
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.enable(SerializationFeature.INDENT_OUTPUT); // Enable pretty-printing
+            objectMapper.registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule());
+            objectMapper.writeValue(writer, this);
         } catch (Exception e) {
             throw new Exception(e);
         }

@@ -25,5 +25,39 @@ public class CinemaApplication {
 
 		double price = firstOrder.calculatePrice();
 		System.out.println(price);
+		// ----------------------------------------------------
+		// Movies
+		Movie tarzan = new Movie("Tarzan");
+		Movie frozen = new Movie("Frozen");
+
+		// Screenings
+		// Tarzan
+		MovieScreening tScreeningOne = new MovieScreening(tarzan, LocalDateTime.now().plusDays(4), 5.5);
+		MovieScreening tScreeningTwo = new MovieScreening( tarzan, LocalDateTime.now().plusDays(4) , 5.5);
+
+		// Frozen
+		MovieScreening fScreeningOne = new MovieScreening(tarzan, LocalDateTime.now().plusDays(4), 10.0);
+		MovieScreening fScreeningTwo = new MovieScreening( tarzan,LocalDateTime.now().plusDays(4) , 10.0);
+
+
+		// Tickets
+		// Tarzan 1
+		MovieTicket TarzanTicketOne = new MovieTicket(tScreeningOne, true, 7,8 );
+		MovieTicket TarzanTicketTwo = new MovieTicket(tScreeningOne, true,7,9);
+
+		// Tarzan 2
+
+		// Frozen 1
+
+		// Frozen 2
+
+		// Order
+		Order OrderTarzan1 = new Order(1,true);
+		OrderTarzan1.addSeatReservation(TarzanTicketOne);
+		OrderTarzan1.addSeatReservation(TarzanTicketTwo);
+
+		OrderTarzan1.export(PLAIN_TEXT);
+		OrderTarzan1.export(JSON);
+
 	}
 }

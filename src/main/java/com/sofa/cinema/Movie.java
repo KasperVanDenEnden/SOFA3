@@ -1,9 +1,12 @@
 package com.sofa.cinema;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.util.List;
 
 public class Movie {
     private String title;
+
     private List<MovieScreening> screenings;
 
     public Movie(String title) {
