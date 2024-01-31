@@ -13,6 +13,7 @@ public class MovieScreening {
         this.dateAndTime = dateAndTime;
         this.pricePerSeat = pricePerSeat;
         this.movie = movie;
+        tickets = new ArrayList<MovieTicket>();
     }
 
     public double getPricePerSeat() {
