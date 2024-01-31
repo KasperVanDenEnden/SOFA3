@@ -1,5 +1,9 @@
 package com.sofa.cinema;
 
+import com.google.gson.Gson;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.ArrayList;
 
 public class Order {
@@ -31,7 +35,7 @@ public class Order {
         return price;
     }
 
-    public void export(TicketExportFormat exportFormat) {
+    public void export(TicketExportFormat exportFormat) throws Exception {
         switch (exportFormat) {
             case JSON:
                 exportToJson();
@@ -44,19 +48,31 @@ public class Order {
         }
     }
 
-    private void exportToPlainText() {
-        String plainText = "Order Number: " + this.orderNr + "\n";
-        plainText += "Is Student Order: " + this.isStudentOrder + "\n";
-        plainText += "Movie Tickets:\n";
-        for (MovieTicket ticket : this.movieTickets) {
-            plainText += "  " + ticket.toString() + "\n";
-        }
+    private void exportToPlainText() throws Exception {
+        try {
+            String plainText = "Order Number: " + this.orderNr + "\n";
+            plainText += "Is Student Order: " + this.isStudentOrder + "\n";
+            plainText += "Movie Tickets:\n";
+            for (MovieTicket ticket : this.movieTickets) {
+                plainText += "  " + ticket.toString() + "\n";
+            }
 
-        System.out.println(plainText);
+            BufferedWriter br = new BufferedWriter(new FileWriter("src/main/java/com/sofa/cinema/exports/order.txt"));
+            br.write(plainText);
+            br.close();
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
     }
 
-    private void exportToJson() {
-
-
+    private void exportToJson() throws Exception {
+        try {
+            Gson gson = new Gson();
+            FileWriter writer = new FileWriter("src/main/java/com/sofa/cinema/exports/order.json");
+            gson.toJson(this.toString(), writer);
+            writer.close();
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
     }
 }
