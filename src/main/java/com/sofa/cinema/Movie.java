@@ -1,8 +1,10 @@
-import java.util.ArrayList;
+package com.sofa.cinema;
+
+import java.util.List;
 
 public class Movie {
     private String title;
-    private ArrayList<MovieScreening> screenings;
+    private List<MovieScreening> screenings;
 
     public Movie(String title) {
         this.title = title;

@@ -1,3 +1,5 @@
+package com.sofa.cinema;
+
 public class MovieTicket {
     private Integer rowNr;
     private Integer seatNr;

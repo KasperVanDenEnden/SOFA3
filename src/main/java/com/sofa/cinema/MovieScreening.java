@@ -1,3 +1,5 @@
+package com.sofa.cinema;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
