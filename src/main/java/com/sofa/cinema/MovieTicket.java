@@ -1,5 +1,8 @@
 package com.sofa.cinema;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class MovieTicket {
     private Integer rowNr;
     private Integer seatNr;

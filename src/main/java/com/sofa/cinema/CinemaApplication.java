@@ -51,11 +51,7 @@ public class CinemaApplication {
 		OrderTarzan1.addSeatReservation(TarzanTicketOne);
 		OrderTarzan1.addSeatReservation(TarzanTicketTwo);
 
-
-
-
 		OrderTarzan1.export(PLAIN_TEXT);
-
 		OrderTarzan1.export(JSON);
 	}
 }

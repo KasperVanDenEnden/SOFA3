@@ -1,0 +1,23 @@
+{
+  "orderNr" : 1,
+  "isStudentOrder" : true,
+  "movieTickets" : [ {
+    "rowNr" : 7,
+    "seatNr" : 8,
+    "isPremium" : true,
+    "screening" : {
+      "pricePerSeat" : 5.5
+    },
+    "price" : 5.5,
+    "premiumTicket" : true
+  }, {
+    "rowNr" : 7,
+    "seatNr" : 9,
+    "isPremium" : true,
+    "screening" : {
+      "pricePerSeat" : 5.5
+    },
+    "price" : 5.5,
+    "premiumTicket" : true
+  } ]
+}

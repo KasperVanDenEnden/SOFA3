@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDateTime;
 import java.util.ArrayList;
 
+
 public class MovieScreening {
     private LocalDateTime dateAndTime;
     private double pricePerSeat;

@@ -1,11 +1,15 @@
 package com.sofa.cinema;
 
 import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.ArrayList;
 
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class Order {
     private int orderNr;
     private boolean isStudentOrder;
@@ -63,8 +67,9 @@ public class Order {
     }
     private void exportToJson() throws Exception {
         try (FileWriter writer = new FileWriter("src/main/java/com/sofa/cinema/exports/order.json")){
-            Gson gson = new Gson();
-            gson.toJson(this.toString(), writer);
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.enable(SerializationFeature.INDENT_OUTPUT); // Enable pretty-printing
+            objectMapper.writeValue(writer, this);
         } catch (Exception e) {
             throw new Exception(e);
         }

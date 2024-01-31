@@ -1,5 +1,7 @@
 package com.sofa.cinema;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+
 import java.util.ArrayList;
 
 public class Movie {
