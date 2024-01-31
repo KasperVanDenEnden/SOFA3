@@ -1,11 +1,11 @@
 package com.sofa.cinema;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class Order {
     private int orderNr;
     private boolean isStudentOrder;
-    private List<MovieTicket> movieTickets;
+    private ArrayList<MovieTicket> movieTickets;
 
     public Order(int orderNr, boolean isStudentOrder) {
         this.orderNr = orderNr;
