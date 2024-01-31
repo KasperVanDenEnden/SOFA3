@@ -26,13 +26,36 @@ public class Order {
     }
 
     public double calculatePrice() {
-        double price = 0;
+        double totalPrice = 0;
 
-        for (MovieTicket ticket : this.movieTickets) {
-            price = price + ticket.getPrice();
+        for (int i = 0; i < movieTickets.size(); i++) {
+            MovieTicket ticket = movieTickets.get(i);
+            int dayNumber = ticket.getDateAndTime().getDayOfWeek().getValue();
+            double ticketPrice = ticket.getPrice();
+
+            if (i / 2 != 0) {
+                if (!(this.isStudentOrder) || !(dayNumber >= 1 && dayNumber <= 4)) {
+                    // Free when second ticket and student or when second ticket and mo/tue/we/thu
+                    if (ticket.isPremiumTicket()) {
+                        if (isStudentOrder) {
+                            // 2 euros extra when premium ticket and student
+                            totalPrice += ticketPrice + 2.0;
+                        } else {
+                            // 3 euros extra when premium ticket and no student
+                            totalPrice += ticketPrice + 3.0;
+                        }
+                    } else if (dayNumber >= 6 && dayNumber <= 7 && !this.isStudentOrder && movieTickets.size() >= 6) {
+                        // When weekend and no student and more or equal then 6 tickets 10% discount
+                        totalPrice += ticketPrice * 0.9;
+                    } else {
+                        // Else normal price
+                        totalPrice += ticketPrice;
+                    }
+                }
+            }
         }
 
-        return price;
+        return totalPrice;
     }
 
     public void export(TicketExportFormat exportFormat) throws Exception {

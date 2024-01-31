@@ -1,5 +1,7 @@
 package com.sofa.cinema;
 
+import java.time.LocalDateTime;
+
 public class MovieTicket {
     private Integer rowNr;
     private Integer seatNr;
@@ -21,8 +23,11 @@ public class MovieTicket {
         return this.screening.getPricePerSeat();
     }
 
+    public LocalDateTime getDateAndTime() {
+        return this.screening.getDateAndTime();
+    }
+
     public String toString() {
         return "Row: " + rowNr + "& Seat: " + seatNr + "(Premium: " + isPremium + ")";
     }
-
 }
