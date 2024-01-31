@@ -49,28 +49,22 @@ public class Order {
     }
 
     private void exportToPlainText() throws Exception {
-        try {
+        try (BufferedWriter br = new BufferedWriter(new FileWriter("src/main/java/com/sofa/cinema/exports/order.txt"))){
             String plainText = "Order Number: " + this.orderNr + "\n";
             plainText += "Is Student Order: " + this.isStudentOrder + "\n";
             plainText += "Movie Tickets:\n";
             for (MovieTicket ticket : this.movieTickets) {
                 plainText += "  " + ticket.toString() + "\n";
             }
-
-            BufferedWriter br = new BufferedWriter(new FileWriter("src/main/java/com/sofa/cinema/exports/order.txt"));
             br.write(plainText);
-            br.close();
         } catch (Exception e) {
             throw new Exception(e);
         }
     }
-
     private void exportToJson() throws Exception {
-        try {
+        try (FileWriter writer = new FileWriter("src/main/java/com/sofa/cinema/exports/order.json")){
             Gson gson = new Gson();
-            FileWriter writer = new FileWriter("src/main/java/com/sofa/cinema/exports/order.json");
             gson.toJson(this.toString(), writer);
-            writer.close();
         } catch (Exception e) {
             throw new Exception(e);
         }

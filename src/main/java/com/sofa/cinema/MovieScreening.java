@@ -1,6 +1,7 @@
 package com.sofa.cinema;
 
 import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDateTime;
 import java.util.ArrayList;
 
 public class MovieScreening {

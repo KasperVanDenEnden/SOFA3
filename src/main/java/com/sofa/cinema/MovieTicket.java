@@ -22,7 +22,7 @@ public class MovieTicket {
     }
 
     public String toString() {
-        return "Row: " + rowNr + "& Seat: " + seatNr + "(Premium: " + isPremium + ")";
+        return "Row: " + rowNr + " & Seat: " + seatNr + "(Premium: " + isPremium + ")";
     }
 
 }

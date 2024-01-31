@@ -1,13 +1,14 @@
 package com.sofa.cinema;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class Movie {
     private String title;
-    private List<MovieScreening> screenings;
+    private ArrayList<MovieScreening> screenings;
 
     public Movie(String title) {
         this.title = title;
+        screenings = new ArrayList<MovieScreening>();
     }
 
     public void addScreening(MovieScreening screening) {
