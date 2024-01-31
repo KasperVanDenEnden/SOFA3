@@ -16,7 +16,7 @@ public class CinemaApplication {
 
 		Order firstOrder = new Order(1,true);
 		Movie movie = new Movie("Batman");
-		MovieScreening movieScreening = new MovieScreening(movie, LocalDateTime.now(), 20.0);
+		MovieScreening movieScreening = new MovieScreening(movie, LocalDateTime.now().plusDays(4), 20.0);
 		MovieTicket movieTicket = new MovieTicket(movieScreening, false, 5, 6);
 		firstOrder.addSeatReservation(movieTicket);
 
