@@ -21,18 +21,12 @@ public class CinemaApplication {
 
 		// Screenings
 			// Tarzan
-			LocalDateTime tOneDateTime = LocalDateTime.of(2024, 2, 1, 18, 30); // 2024-02-01T18:30
-			LocalDateTime tTwoDateTime = LocalDateTime.of(2024, 2, 1, 21, 0);  // 2024-02-01T21:00
-
-			MovieScreening tScreeningOne = new MovieScreening(tarzan, tOneDateTime, 5.5);
-			MovieScreening tScreeningTwo = new MovieScreening( tarzan, tTwoDateTime , 5.5);
+			MovieScreening tScreeningOne = new MovieScreening(tarzan, LocalDateTime.now().plusDays(4), 5.5);
+			MovieScreening tScreeningTwo = new MovieScreening( tarzan, LocalDateTime.now().plusDays(4) , 5.5);
 
 			// Frozen
-			LocalDateTime fOneDateTime = LocalDateTime.of(2024, 2, 1, 18, 30); // 2024-02-01T18:30
-			LocalDateTime fTwoDateTime = LocalDateTime.of(2024, 2, 1, 21, 0);  // 2024-02-01T21:00
-
-			MovieScreening fScreeningOne = new MovieScreening(tarzan, tOneDateTime, 10.0);
-			MovieScreening fScreeningTwo = new MovieScreening( tarzan, tTwoDateTime , 10.0);
+			MovieScreening fScreeningOne = new MovieScreening(tarzan, LocalDateTime.now().plusDays(4)e, 10.0);
+			MovieScreening fScreeningTwo = new MovieScreening( tarzan,LocalDateTime.now().plusDays(4) , 10.0);
 
 
 		// Tickets
@@ -53,5 +47,18 @@ public class CinemaApplication {
 
 		OrderTarzan1.export(PLAIN_TEXT);
 		OrderTarzan1.export(JSON);
+    // ----------------------------------------------------
+		Order firstOrder = new Order(1,true);
+		Movie movie = new Movie("Batman");
+		MovieScreening movieScreening = new MovieScreening(movie, LocalDateTime.now().plusDays(4), 20.0);
+		MovieTicket movieTicket = new MovieTicket(movieScreening, false, 5, 6);
+		firstOrder.addSeatReservation(movieTicket);
+
+		firstOrder.export(PLAIN_TEXT);
+		firstOrder.export(JSON);
+
+		double price = firstOrder.calculatePrice();
+		System.out.println(price);
+
 	}
 }

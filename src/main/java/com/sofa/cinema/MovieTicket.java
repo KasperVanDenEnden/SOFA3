@@ -1,5 +1,6 @@
 package com.sofa.cinema;
 
+import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
@@ -24,8 +25,11 @@ public class MovieTicket {
         return this.screening.getPricePerSeat();
     }
 
+    public LocalDateTime getDateAndTime() {
+        return this.screening.getDateAndTime();
+    }
+
     public String toString() {
         return "Row: " + rowNr + " & Seat: " + seatNr + "(Premium: " + isPremium + ")";
     }
-
 }
