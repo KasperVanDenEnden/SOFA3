@@ -18,7 +18,7 @@
 		<sonar.coverage.jacoco.xmlReportPaths>
 			target/site/jacoco/jacoco.xml
 		</sonar.coverage.jacoco.xmlReportPaths>
-		<sonar.projectKey>cinema</sonar.projectKey>
+		<sonar.projectKey>KasperVanDenEnden_SOFA3</sonar.projectKey>
 	</properties>
 	<dependencies>
 		<dependency>
