@@ -100,6 +100,21 @@ public class OrderTest {
     }
 
     @Test
+    public void givenTwoTicketsWithWednesdayScreeningAndStudentButNoPremium_whenCalculatePrice_thenReturnStandardPriceOfFirstTicket() {
+        Order order = new Order(1,true);
+        Movie movie = new Movie("Batman");
+        MovieScreening movieScreening = new MovieScreening(movie, LocalDateTime.of(2024, 1, 31, 1, 1), 10.0);
+        MovieTicket movieTicketFirst = new MovieTicket(movieScreening, false, 5, 6);
+        MovieTicket movieTicketSecond = new MovieTicket(movieScreening, false, 5, 7);
+        order.addSeatReservation(movieTicketFirst);
+        order.addSeatReservation(movieTicketSecond);
+
+        double totalPrice = order.calculatePrice();
+
+        assertThat(totalPrice).isEqualTo(10);
+    }
+
+    @Test
     public void givenNoTickets_whenCalculatePrice_thenReturnZero() {
         Order order = new Order(1,false);
 
