@@ -19,6 +19,7 @@
 			target/site/jacoco/jacoco.xml
 		</sonar.coverage.jacoco.xmlReportPaths>
 		<sonar.projectKey>KasperVanDenEnden_SOFA3</sonar.projectKey>
+		<sonar.organization>kaspervandenenden</sonar.organization>
 	</properties>
 	<dependencies>
 		<dependency>
