@@ -6,22 +6,22 @@
     "seatNr" : 8,
     "isPremium" : true,
     "screening" : {
-      "dateAndTime" : [ 2024, 2, 4, 20, 29, 22, 956409900 ],
+      "dateAndTime" : [ 2024, 2, 5, 15, 5, 18, 645419300 ],
       "pricePerSeat" : 5.5
     },
-    "price" : 5.5,
-    "dateAndTime" : [ 2024, 2, 4, 20, 29, 22, 956409900 ],
-    "premiumTicket" : true
+    "dateAndTime" : [ 2024, 2, 5, 15, 5, 18, 645419300 ],
+    "premiumTicket" : true,
+    "price" : 5.5
   }, {
     "rowNr" : 7,
     "seatNr" : 9,
     "isPremium" : true,
     "screening" : {
-      "dateAndTime" : [ 2024, 2, 4, 20, 29, 22, 956409900 ],
+      "dateAndTime" : [ 2024, 2, 5, 15, 5, 18, 645419300 ],
       "pricePerSeat" : 5.5
     },
-    "price" : 5.5,
-    "dateAndTime" : [ 2024, 2, 4, 20, 29, 22, 956409900 ],
-    "premiumTicket" : true
+    "dateAndTime" : [ 2024, 2, 5, 15, 5, 18, 645419300 ],
+    "premiumTicket" : true,
+    "price" : 5.5
   } ]
 }
