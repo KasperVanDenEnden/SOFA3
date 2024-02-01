@@ -85,6 +85,29 @@ public class OrderTest {
     }
 
     @Test
+    public void givenSixTicketsWithSaturdayScreeningAndStudentButNoPremium_whenCalculatePrice_thenReturnStandardPriceOfThreeTickets() {
+        Order order = new Order(1,true);
+        Movie movie = new Movie("Batman");
+        MovieScreening movieScreening = new MovieScreening(movie, LocalDateTime.of(2024, 2, 3, 1, 1), 10.0);
+        MovieTicket movieTicketFirst = new MovieTicket(movieScreening, false, 5, 3);
+        MovieTicket movieTicketSecond = new MovieTicket(movieScreening, false, 5, 4);
+        MovieTicket movieTicketThird = new MovieTicket(movieScreening, false, 5, 5);
+        MovieTicket movieTicketFourth = new MovieTicket(movieScreening, false, 5, 6);
+        MovieTicket movieTicketFifth = new MovieTicket(movieScreening, false, 5, 7);
+        MovieTicket movieTicketSixth = new MovieTicket(movieScreening, false, 5, 8);
+        order.addSeatReservation(movieTicketFirst);
+        order.addSeatReservation(movieTicketSecond);
+        order.addSeatReservation(movieTicketThird);
+        order.addSeatReservation(movieTicketFourth);
+        order.addSeatReservation(movieTicketFifth);
+        order.addSeatReservation(movieTicketSixth);
+
+        double totalPrice = order.calculatePrice();
+
+        assertThat(totalPrice).isEqualTo(30);
+    }
+
+    @Test
     public void givenTwoTicketsWithWednesdayScreeningAndNoStudentAndNoPremium_whenCalculatePrice_thenReturnStandardPriceOfFirstTicket() {
         Order order = new Order(1,false);
         Movie movie = new Movie("Batman");
