@@ -3,6 +3,8 @@ package com.sofa.cinema;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.logging.Logger;
+
 import java.time.LocalDateTime;
 
 import static com.sofa.cinema.TicketExportFormat.JSON;
@@ -11,8 +13,12 @@ import static com.sofa.cinema.TicketExportFormat.PLAIN_TEXT;
 @SpringBootApplication
 public class CinemaApplication {
 
+
 	public static void main(String[] args) throws Exception {
+
 		SpringApplication.run(CinemaApplication.class, args);
+
+		final Logger logger = Logger.getLogger("MAIN");
 
 		Order firstOrder = new Order(1,true);
 		Movie movie = new Movie("Batman");
@@ -24,7 +30,7 @@ public class CinemaApplication {
 		firstOrder.export(JSON);
 
 		double price = firstOrder.calculatePrice();
-		System.out.println(price);
+		logger.info("Price: " + price);
 		// ----------------------------------------------------
 		// Movies
 		Movie tarzan = new Movie("Tarzan");
