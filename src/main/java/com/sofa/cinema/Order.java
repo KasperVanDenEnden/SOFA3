@@ -3,17 +3,22 @@ package com.sofa.cinema;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.sofa.cinema.errors.ExportToJsonException;
+import com.sofa.cinema.errors.ExportToPlainTextException;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class Order {
     private int orderNr;
     private boolean isStudentOrder;
     private ArrayList<MovieTicket> movieTickets;
-
+    // Create a logger for the Order class
+    private static final Logger logger = Logger.getLogger("ORDER");
     public Order(int orderNr, boolean isStudentOrder) {
         this.orderNr = orderNr;
         this.isStudentOrder = isStudentOrder;
@@ -41,8 +46,9 @@ public class Order {
             }
 
             double ticketPrice = ticket.getPrice();
+            boolean isPremium = ticket.isPremiumTicket();
 
-            if (ticket.isPremiumTicket()) {
+            if (isPremium) {
                 if (isStudentOrder) {
                     // 2 euros extra when premium ticket and student
                     ticketPrice += 2.0;
@@ -73,11 +79,11 @@ public class Order {
                 exportToPlainText();
                 break;
             default:
-            System.out.println("Unsupported export format");
+            logger.info("Unsupported export format");
         }
     }
 
-    private void exportToPlainText() throws Exception {
+    private void exportToPlainText() throws ExportToPlainTextException {
         try (BufferedWriter br = new BufferedWriter(new FileWriter("src/main/java/com/sofa/cinema/exports/order.txt"))){
             StringBuilder plainText = new StringBuilder("Order Number: " + this.orderNr + "\n");
             plainText.append("Is Student Order: ").append(this.isStudentOrder).append("\n");
@@ -86,19 +92,19 @@ public class Order {
                 plainText.append("  ").append(ticket.toString()).append("\n");
             }
             br.write(plainText.toString());
-        } catch (Exception e) {
-            throw new Exception(e);
+        } catch (IOException e) {
+            throw new ExportToPlainTextException("Error exporting to plain text", e);
         }
     }
 
-    private void exportToJson() throws Exception {
+    private void exportToJson() throws ExportToJsonException {
         try (FileWriter writer = new FileWriter("src/main/java/com/sofa/cinema/exports/order.json")){
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.enable(SerializationFeature.INDENT_OUTPUT); // Enable pretty-printing
             objectMapper.registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule());
             objectMapper.writeValue(writer, this);
-        } catch (Exception e) {
-            throw new Exception(e);
+        } catch (IOException e) {
+            throw new ExportToJsonException("Error exporting to JSON", e);
         }
     }
 }
