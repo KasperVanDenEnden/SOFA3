@@ -8,10 +8,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
  class OrderTest {
+      String movieName= "Batman";
+
     @Test
      void calculatePrice_givenOneTicketWithSundayScreeningAndStudentButNoPremium_whenCalculatePrice_thenReturnStandardPrice() {
         Order order = new Order(1,true);
-        Movie movie = new Movie("Batman");
+        Movie movie = new Movie(movieName);
         MovieScreening movieScreening = new MovieScreening(movie, LocalDateTime.of(2024, 2, 4, 1, 1), 20.0);
         MovieTicket movieTicket = new MovieTicket(movieScreening, false, 5, 6);
         order.addSeatReservation(movieTicket);
@@ -24,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
     @Test
      void calculatePrice_givenTwoTicketsWithSaturdayScreeningAndStudentButNoPremium_whenCalculatePrice_thenReturnStandardPriceOfFirstTicket() {
         Order order = new Order(1,true);
-        Movie movie = new Movie("Batman");
+        Movie movie = new Movie(movieName);
         MovieScreening movieScreening = new MovieScreening(movie, LocalDateTime.of(2024, 2, 3, 1, 1), 10.0);
         MovieTicket movieTicketFirst = new MovieTicket(movieScreening, false, 5, 6);
         MovieTicket movieTicketSecond = new MovieTicket(movieScreening, false, 5, 7);
@@ -39,7 +41,7 @@ import static org.assertj.core.api.Assertions.assertThat;
     @Test
      void calculatePrice_givenOneTicketWithMondayScreeningAndStudentAndPremium_whenCalculatePrice_thenReturnPriceWithTwoExtraEuros() {
         Order order = new Order(1,true);
-        Movie movie = new Movie("Batman");
+        Movie movie = new Movie(movieName);
         MovieScreening movieScreening = new MovieScreening(movie, LocalDateTime.of(2024, 1, 29, 1, 1), 15.0);
         MovieTicket movieTicket = new MovieTicket(movieScreening, true, 5, 6);
         order.addSeatReservation(movieTicket);
@@ -52,7 +54,7 @@ import static org.assertj.core.api.Assertions.assertThat;
     @Test
      void calculatePrice_givenOneTicketWithMondayScreeningAndNoStudentButWithPremium_whenCalculatePrice_thenReturnPriceWithThreeExtraEuros() {
         Order order = new Order(1,false);
-        Movie movie = new Movie("Batman");
+        Movie movie = new Movie(movieName);
         MovieScreening movieScreening = new MovieScreening(movie, LocalDateTime.of(2024, 1, 29, 1, 1), 15.0);
         MovieTicket movieTicket = new MovieTicket(movieScreening, true, 5, 6);
         order.addSeatReservation(movieTicket);
@@ -63,9 +65,9 @@ import static org.assertj.core.api.Assertions.assertThat;
     }
 
     @Test
-     void  calculatePrice_givenSixTicketsWithSaturdayScreeningAndNoStudentAndNoPremium_whenCalculatePrice_thenReturnPriceWithTenPercentOff() {
+     void calculatePrice_givenSixTicketsWithSaturdayScreeningAndNoStudentAndNoPremium_whenCalculatePrice_thenReturnPriceWithTenPercentOff() {
         Order order = new Order(1,false);
-        Movie movie = new Movie("Batman");
+        Movie movie = new Movie(movieName);
         MovieScreening movieScreening = new MovieScreening(movie, LocalDateTime.of(2024, 2, 3, 1, 1), 10.0);
         MovieTicket movieTicketFirst = new MovieTicket(movieScreening, false, 5, 3);
         MovieTicket movieTicketSecond = new MovieTicket(movieScreening, false, 5, 4);

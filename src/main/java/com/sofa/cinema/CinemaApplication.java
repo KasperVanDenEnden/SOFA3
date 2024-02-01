@@ -30,7 +30,7 @@ public class CinemaApplication {
 		firstOrder.export(JSON);
 
 		double price = firstOrder.calculatePrice();
-		logger.info("Price: " + price);
+		logger.info(String.format("Price: %s", price));
 		// ----------------------------------------------------
 		// Movies
 		Movie tarzan = new Movie("Tarzan");
