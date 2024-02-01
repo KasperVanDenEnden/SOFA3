@@ -54,4 +54,4 @@ jobs:
        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
        SONAR_HOST_URL: https://sonarcloud.io
        SONAR_PROJECT_KEY: KasperVanDenEnden_SOFA3
-       SONAR_ORGANIZATION_KEY: kaspervandenenden
+       SONAR_ORGANIZATION: kaspervandenenden
