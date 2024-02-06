@@ -18,7 +18,7 @@ public class Movie {
     }
 
     public String toString() {
-        return this.title.toString();
+        return this.title;
     }
 
 
