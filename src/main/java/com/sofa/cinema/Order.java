@@ -1,13 +1,9 @@
 package com.sofa.cinema;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.sofa.cinema.behaviour.*;
 import com.sofa.cinema.errors.ExportException;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -16,20 +12,55 @@ public class Order {
     private int orderNr;
     private boolean isStudentOrder;
     private ArrayList<MovieTicket> movieTickets;
+
+    private PriceRuleBehaviour priceRuleBehaviourPremium;
+    private PriceRuleBehaviour priceRuleBehaviourDiscount;
+    private PriceRuleBehaviour priceRuleBehaviourFree;
+
     // Create a logger for the Order class
     private static final Logger logger = Logger.getLogger("ORDER");
+
     public Order(int orderNr, boolean isStudentOrder) {
         this.orderNr = orderNr;
         this.isStudentOrder = isStudentOrder;
         this.movieTickets = new ArrayList<MovieTicket>();
+
+        priceRuleBehaviourPremium = null;
+        priceRuleBehaviourDiscount = null;
+        priceRuleBehaviourFree = null;
     }
 
     public int getOrderNr() {
         return this.orderNr;
     }
 
+    public boolean isStudentOrder() {
+        return isStudentOrder;
+    }
+
+    public ArrayList<MovieTicket> getMovieTickets() {
+        return movieTickets;
+    }
+
     public void addSeatReservation(MovieTicket ticket) {
         this.movieTickets.add(ticket);
+    }
+
+    public void export(ExportBehaviour behaviour) throws ExportException {
+        behaviour.export(this);
+    }
+
+    public void setPremiumFeeBehaviour(MovieTicket ticket, boolean isPremium, boolean isStudentOrder) {
+        this.priceRuleBehaviourPremium = new PremiumFeeBehaviour(ticket, isPremium, isStudentOrder);
+    }
+
+    public void setDiscountBehaviour(int totalTickets, MovieTicket ticket, double ticketPrice, boolean isStudentOrder) {
+        int dayNumber = ticket.getDateAndTime().getDayOfWeek().getValue();
+        this.priceRuleBehaviourDiscount = new DiscountBehaviour(totalTickets, dayNumber, ticketPrice, isStudentOrder);
+    }
+
+    public void setFreeBehaviour(int ticketIndex, boolean isStudentOrder, MovieTicket ticket) {
+        this.priceRuleBehaviourFree = new FreeBehaviour(ticketIndex, isStudentOrder, ticket);
     }
 
     public double calculatePrice() {
@@ -37,73 +68,22 @@ public class Order {
 
         for (int i = 0; i < movieTickets.size(); i++) {
             MovieTicket ticket = movieTickets.get(i);
-            int dayNumber = ticket.getDateAndTime().getDayOfWeek().getValue();
 
-            if (((i + 1.0) % 2 == 0) && (this.isStudentOrder || (dayNumber >= 1 && dayNumber <= 4))) {
-                // Free when second ticket and student or when second ticket and mo/tue/we/thu
-                continue;
-            }
+            this.setFreeBehaviour(i, isStudentOrder, ticket);
+            double amount = this.priceRuleBehaviourFree.getPriceRule();
+            if (amount == 0) continue;
 
-            double ticketPrice = ticket.getPrice();
             boolean isPremium = ticket.isPremiumTicket();
 
-            if (isPremium) {
-                if (isStudentOrder) {
-                    // 2 euros extra when premium ticket and student
-                    ticketPrice += 2.0;
-                } else {
-                    // 3 euros extra when premium ticket and no student
-                    ticketPrice += 3.0;
-                }
-            }
+            this.setPremiumFeeBehaviour(ticket, isPremium, isStudentOrder);
+            double ticketPrice = this.priceRuleBehaviourPremium.getPriceRule();
 
-            if (dayNumber >= 5 && dayNumber <= 7 && !this.isStudentOrder && movieTickets.size() >= 6) {
-                // When weekend and no student and more or equal then 6 tickets 10% discount
-                totalPrice += ticketPrice * 0.9;
-            } else {
-                // Else normal price
-                totalPrice += ticketPrice;
-            }
+            this.setDiscountBehaviour(movieTickets.size(), ticket, ticketPrice, isStudentOrder);
+            ticketPrice = this.priceRuleBehaviourDiscount.getPriceRule();
+
+            totalPrice += ticketPrice;
         }
 
         return totalPrice;
-    }
-
-    public void export(TicketExportFormat exportFormat) throws ExportException {
-        switch (exportFormat) {
-            case JSON:
-                exportToJson();
-                break;
-            case PLAIN_TEXT:
-                exportToPlainText();
-                break;
-            default:
-            logger.info("Unsupported export format");
-        }
-    }
-
-    private void exportToPlainText() throws ExportException {
-        try (BufferedWriter br = new BufferedWriter(new FileWriter("src/main/java/com/sofa/cinema/exports/order.txt"))){
-            StringBuilder plainText = new StringBuilder("Order Number: " + this.orderNr + "\n");
-            plainText.append("Is Student Order: ").append(this.isStudentOrder).append("\n");
-            plainText.append("Movie Tickets:\n");
-            for (MovieTicket ticket : this.movieTickets) {
-                plainText.append("  ").append(ticket.toString()).append("\n");
-            }
-            br.write(plainText.toString());
-        } catch (IOException e) {
-            throw new ExportException("Error exporting to plain text", e);
-        }
-    }
-
-    private void exportToJson() throws ExportException {
-        try (FileWriter writer = new FileWriter("src/main/java/com/sofa/cinema/exports/order.json")){
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.enable(SerializationFeature.INDENT_OUTPUT); // Enable pretty-printing
-            objectMapper.registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule());
-            objectMapper.writeValue(writer, this);
-        } catch (IOException e) {
-            throw new ExportException("Error exporting to JSON", e);
-        }
     }
 }

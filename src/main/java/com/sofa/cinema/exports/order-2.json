@@ -1,0 +1,31 @@
+{
+  "orderNr" : 2,
+  "isStudentOrder" : true,
+  "movieTickets" : [ {
+    "rowNr" : 7,
+    "seatNr" : 8,
+    "isPremium" : true,
+    "screening" : {
+      "dateAndTime" : [ 2024, 2, 10, 20, 14, 6, 98184600 ],
+      "pricePerSeat" : 5.5
+    },
+    "premiumTicket" : true,
+    "dateAndTime" : [ 2024, 2, 10, 20, 14, 6, 98184600 ],
+    "price" : 5.5
+  }, {
+    "rowNr" : 7,
+    "seatNr" : 9,
+    "isPremium" : true,
+    "screening" : {
+      "dateAndTime" : [ 2024, 2, 10, 20, 14, 6, 98184600 ],
+      "pricePerSeat" : 5.5
+    },
+    "premiumTicket" : true,
+    "dateAndTime" : [ 2024, 2, 10, 20, 14, 6, 98184600 ],
+    "price" : 5.5
+  } ],
+  "priceRuleBehaviourFirst" : null,
+  "priceRuleBehaviourSecond" : null,
+  "priceRuleBehaviourThird" : null,
+  "studentOrder" : true
+}
