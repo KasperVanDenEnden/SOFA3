@@ -8,7 +8,7 @@ import com.sofa.cinema.errors.ExportException;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class ExportJson implements ExportBehaviour {
+public class ExportJsonBehaviour implements ExportBehaviour {
     public void export(Order order) throws ExportException {
         try (FileWriter writer = new FileWriter("src/main/java/com/sofa/cinema/exports/order-" + order.getOrderNr() + ".json")) {
             ObjectMapper objectMapper = new ObjectMapper();

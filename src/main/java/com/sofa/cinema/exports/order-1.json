@@ -6,12 +6,15 @@
     "seatNr" : 6,
     "isPremium" : false,
     "screening" : {
-      "dateAndTime" : [ 2024, 2, 10, 15, 29, 59, 9164600 ],
+      "dateAndTime" : [ 2024, 2, 10, 20, 14, 1, 754235600 ],
       "pricePerSeat" : 20.0
     },
     "premiumTicket" : false,
-    "dateAndTime" : [ 2024, 2, 10, 15, 29, 59, 9164600 ],
+    "dateAndTime" : [ 2024, 2, 10, 20, 14, 1, 754235600 ],
     "price" : 20.0
   } ],
+  "priceRuleBehaviourFirst" : null,
+  "priceRuleBehaviourSecond" : null,
+  "priceRuleBehaviourThird" : null,
   "studentOrder" : true
 }

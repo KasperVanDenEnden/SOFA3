@@ -7,7 +7,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class ExportPlainText implements ExportBehaviour {
+public class ExportPlainTextBehaviour implements ExportBehaviour {
     public void export(Order order) throws ExportException {
         try (BufferedWriter br = new BufferedWriter(new FileWriter("src/main/java/com/sofa/cinema/exports/order-" + order.getOrderNr() + ".txt"))) {
             StringBuilder plainText = new StringBuilder("Order Number: " + order.getOrderNr() + "\n");

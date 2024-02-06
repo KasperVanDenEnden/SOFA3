@@ -1,7 +1,7 @@
 package com.sofa.cinema;
 
-import com.sofa.cinema.behaviour.ExportJson;
-import com.sofa.cinema.behaviour.ExportPlainText;
+import com.sofa.cinema.behaviour.ExportJsonBehaviour;
+import com.sofa.cinema.behaviour.ExportPlainTextBehaviour;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -9,13 +9,8 @@ import java.util.logging.Logger;
 
 import java.time.LocalDateTime;
 
-import static com.sofa.cinema.TicketExportFormat.JSON;
-import static com.sofa.cinema.TicketExportFormat.PLAIN_TEXT;
-
 @SpringBootApplication
 public class CinemaApplication {
-
-
 	public static void main(String[] args) throws Exception {
 
 		SpringApplication.run(CinemaApplication.class, args);
@@ -33,8 +28,8 @@ public class CinemaApplication {
 		// Add reservations
 		firstOrder.addSeatReservation(movieTicket);
 		// Export
-		firstOrder.export(new ExportPlainText());
-		firstOrder.export(new ExportJson());
+		firstOrder.export(new ExportPlainTextBehaviour());
+		firstOrder.export(new ExportJsonBehaviour());
 
 		// Calculate total price
 		double price = firstOrder.calculatePrice();
@@ -52,7 +47,7 @@ public class CinemaApplication {
  		orderTarzan1.addSeatReservation(tarzanTicketOne);
  		orderTarzan1.addSeatReservation(tarzanTicketTwo);
         // Export
- 		orderTarzan1.export(new ExportPlainText());
- 		orderTarzan1.export(new ExportJson());
+ 		orderTarzan1.export(new ExportPlainTextBehaviour());
+ 		orderTarzan1.export(new ExportJsonBehaviour());
 	}
 }
