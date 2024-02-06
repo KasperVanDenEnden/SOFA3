@@ -1,13 +1,9 @@
 package com.sofa.cinema;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.sofa.cinema.behaviour.ExportBehaviour;
 import com.sofa.cinema.errors.ExportException;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -26,6 +22,14 @@ public class Order {
 
     public int getOrderNr() {
         return this.orderNr;
+    }
+
+    public boolean isStudentOrder() {
+        return isStudentOrder;
+    }
+
+    public ArrayList<MovieTicket> getMovieTickets() {
+        return movieTickets;
     }
 
     public void addSeatReservation(MovieTicket ticket) {
@@ -69,41 +73,7 @@ public class Order {
         return totalPrice;
     }
 
-    public void export(TicketExportFormat exportFormat) throws ExportException {
-        switch (exportFormat) {
-            case JSON:
-                exportToJson();
-                break;
-            case PLAIN_TEXT:
-                exportToPlainText();
-                break;
-            default:
-            logger.info("Unsupported export format");
-        }
-    }
-
-    private void exportToPlainText() throws ExportException {
-        try (BufferedWriter br = new BufferedWriter(new FileWriter("src/main/java/com/sofa/cinema/exports/order.txt"))){
-            StringBuilder plainText = new StringBuilder("Order Number: " + this.orderNr + "\n");
-            plainText.append("Is Student Order: ").append(this.isStudentOrder).append("\n");
-            plainText.append("Movie Tickets:\n");
-            for (MovieTicket ticket : this.movieTickets) {
-                plainText.append("  ").append(ticket.toString()).append("\n");
-            }
-            br.write(plainText.toString());
-        } catch (IOException e) {
-            throw new ExportException("Error exporting to plain text", e);
-        }
-    }
-
-    private void exportToJson() throws ExportException {
-        try (FileWriter writer = new FileWriter("src/main/java/com/sofa/cinema/exports/order.json")){
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.enable(SerializationFeature.INDENT_OUTPUT); // Enable pretty-printing
-            objectMapper.registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule());
-            objectMapper.writeValue(writer, this);
-        } catch (IOException e) {
-            throw new ExportException("Error exporting to JSON", e);
-        }
+    public void export(ExportBehaviour exportBehaviour) throws ExportException {
+        exportBehaviour.export(this);
     }
 }

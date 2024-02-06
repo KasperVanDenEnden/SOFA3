@@ -1,0 +1,17 @@
+{
+  "orderNr" : 1,
+  "isStudentOrder" : true,
+  "movieTickets" : [ {
+    "rowNr" : 5,
+    "seatNr" : 6,
+    "isPremium" : false,
+    "screening" : {
+      "dateAndTime" : [ 2024, 2, 10, 15, 29, 59, 9164600 ],
+      "pricePerSeat" : 20.0
+    },
+    "premiumTicket" : false,
+    "dateAndTime" : [ 2024, 2, 10, 15, 29, 59, 9164600 ],
+    "price" : 20.0
+  } ],
+  "studentOrder" : true
+}
