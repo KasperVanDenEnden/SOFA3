@@ -3,20 +3,22 @@ package com.sofa.cinema;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
- class OrderTest {
-      String movieName= "Batman";
+class OrderTest {
+    String movieName = "Batman";
 
     @Test
-     void calculatePrice_givenOneTicketWithSundayScreeningAndStudentButNoPremium_whenCalculatePrice_thenReturnStandardPrice() {
-        Order order = new Order(1,true);
+    void calculatePrice_givenOneTicketWithSundayScreeningAndStudentButNoPremium_whenCalculatePrice_thenReturnStandardPrice() {
+        Order order = new Order(1, true);
         Movie movie = new Movie(movieName);
         MovieScreening movieScreening = new MovieScreening(movie, LocalDateTime.of(2024, 2, 4, 1, 1), 20.0);
         MovieTicket movieTicket = new MovieTicket(movieScreening, false, 5, 6);
-        order.addSeatReservation(movieTicket);
+        order.addTicketToList(movieTicket);
 
         double totalPrice = order.calculatePrice();
 
@@ -24,14 +26,14 @@ import static org.assertj.core.api.Assertions.assertThat;
     }
 
     @Test
-     void calculatePrice_givenTwoTicketsWithSaturdayScreeningAndStudentButNoPremium_whenCalculatePrice_thenReturnStandardPriceOfFirstTicket() {
-        Order order = new Order(1,true);
+    void calculatePrice_givenTwoTicketsWithSaturdayScreeningAndStudentButNoPremium_whenCalculatePrice_thenReturnStandardPriceOfFirstTicket() {
+        Order order = new Order(1, true);
         Movie movie = new Movie(movieName);
         MovieScreening movieScreening = new MovieScreening(movie, LocalDateTime.of(2024, 2, 3, 1, 1), 10.0);
         MovieTicket movieTicketFirst = new MovieTicket(movieScreening, false, 5, 6);
         MovieTicket movieTicketSecond = new MovieTicket(movieScreening, false, 5, 7);
-        order.addSeatReservation(movieTicketFirst);
-        order.addSeatReservation(movieTicketSecond);
+        order.addTicketToList(movieTicketFirst);
+        order.addTicketToList(movieTicketSecond);
 
         double totalPrice = order.calculatePrice();
 
@@ -39,12 +41,12 @@ import static org.assertj.core.api.Assertions.assertThat;
     }
 
     @Test
-     void calculatePrice_givenOneTicketWithMondayScreeningAndStudentAndPremium_whenCalculatePrice_thenReturnPriceWithTwoExtraEuros() {
-        Order order = new Order(1,true);
+    void calculatePrice_givenOneTicketWithMondayScreeningAndStudentAndPremium_whenCalculatePrice_thenReturnPriceWithTwoExtraEuros() {
+        Order order = new Order(1, true);
         Movie movie = new Movie(movieName);
         MovieScreening movieScreening = new MovieScreening(movie, LocalDateTime.of(2024, 1, 29, 1, 1), 15.0);
         MovieTicket movieTicket = new MovieTicket(movieScreening, true, 5, 6);
-        order.addSeatReservation(movieTicket);
+        order.addTicketToList(movieTicket);
 
         double totalPrice = order.calculatePrice();
 
@@ -52,12 +54,12 @@ import static org.assertj.core.api.Assertions.assertThat;
     }
 
     @Test
-     void calculatePrice_givenOneTicketWithMondayScreeningAndNoStudentButWithPremium_whenCalculatePrice_thenReturnPriceWithThreeExtraEuros() {
-        Order order = new Order(1,false);
+    void calculatePrice_givenOneTicketWithMondayScreeningAndNoStudentButWithPremium_whenCalculatePrice_thenReturnPriceWithThreeExtraEuros() {
+        Order order = new Order(1, false);
         Movie movie = new Movie(movieName);
         MovieScreening movieScreening = new MovieScreening(movie, LocalDateTime.of(2024, 1, 29, 1, 1), 15.0);
         MovieTicket movieTicket = new MovieTicket(movieScreening, true, 5, 6);
-        order.addSeatReservation(movieTicket);
+        order.addTicketToList(movieTicket);
 
         double totalPrice = order.calculatePrice();
 
@@ -65,8 +67,8 @@ import static org.assertj.core.api.Assertions.assertThat;
     }
 
     @Test
-     void calculatePrice_givenSixTicketsWithSaturdayScreeningAndNoStudentAndNoPremium_whenCalculatePrice_thenReturnPriceWithTenPercentOff() {
-        Order order = new Order(1,false);
+    void calculatePrice_givenSixTicketsWithSaturdayScreeningAndNoStudentAndNoPremium_whenCalculatePrice_thenReturnPriceWithTenPercentOff() {
+        Order order = new Order(1, false);
         Movie movie = new Movie(movieName);
         MovieScreening movieScreening = new MovieScreening(movie, LocalDateTime.of(2024, 2, 3, 1, 1), 10.0);
         MovieTicket movieTicketFirst = new MovieTicket(movieScreening, false, 5, 3);
@@ -75,12 +77,12 @@ import static org.assertj.core.api.Assertions.assertThat;
         MovieTicket movieTicketFourth = new MovieTicket(movieScreening, false, 5, 6);
         MovieTicket movieTicketFifth = new MovieTicket(movieScreening, false, 5, 7);
         MovieTicket movieTicketSixth = new MovieTicket(movieScreening, false, 5, 8);
-        order.addSeatReservation(movieTicketFirst);
-        order.addSeatReservation(movieTicketSecond);
-        order.addSeatReservation(movieTicketThird);
-        order.addSeatReservation(movieTicketFourth);
-        order.addSeatReservation(movieTicketFifth);
-        order.addSeatReservation(movieTicketSixth);
+        order.addTicketToList(movieTicketFirst);
+        order.addTicketToList(movieTicketSecond);
+        order.addTicketToList(movieTicketThird);
+        order.addTicketToList(movieTicketFourth);
+        order.addTicketToList(movieTicketFifth);
+        order.addTicketToList(movieTicketSixth);
 
         double totalPrice = order.calculatePrice();
 
@@ -88,14 +90,14 @@ import static org.assertj.core.api.Assertions.assertThat;
     }
 
     @Test
-     void calculatePrice_givenTwoTicketsWithWednesdayScreeningAndNoStudentAndNoPremium_whenCalculatePrice_thenReturnStandardPriceOfFirstTicket() {
-        Order order = new Order(1,false);
+    void calculatePrice_givenTwoTicketsWithWednesdayScreeningAndNoStudentAndNoPremium_whenCalculatePrice_thenReturnStandardPriceOfFirstTicket() {
+        Order order = new Order(1, false);
         Movie movie = new Movie("Batman");
         MovieScreening movieScreening = new MovieScreening(movie, LocalDateTime.of(2024, 1, 31, 1, 1), 10.0);
         MovieTicket movieTicketFirst = new MovieTicket(movieScreening, false, 5, 6);
         MovieTicket movieTicketSecond = new MovieTicket(movieScreening, false, 5, 7);
-        order.addSeatReservation(movieTicketFirst);
-        order.addSeatReservation(movieTicketSecond);
+        order.addTicketToList(movieTicketFirst);
+        order.addTicketToList(movieTicketSecond);
 
         double totalPrice = order.calculatePrice();
 
@@ -103,8 +105,8 @@ import static org.assertj.core.api.Assertions.assertThat;
     }
 
     @Test
-     void calculatePrice_givenNoTickets_whenCalculatePrice_thenReturnZero() {
-        Order order = new Order(1,false);
+    void calculatePrice_givenNoTickets_whenCalculatePrice_thenReturnZero() {
+        Order order = new Order(1, false);
 
         double totalPrice = order.calculatePrice();
 
@@ -113,11 +115,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
     @Test
-     void calculatePrice_loopExecution() {
+    void calculatePrice_loopExecution() {
         MovieTicket mockTicket = Mockito.mock(MovieTicket.class);
 
-        Order order = new Order(1,false);
-        order.addSeatReservation(mockTicket);
+        Order order = new Order(1, false);
+        order.addTicketToList(mockTicket);
 
         // set up the condition for the mock ticket
         Mockito.when(mockTicket.getDateAndTime()).thenReturn(LocalDateTime.now());
@@ -131,12 +133,12 @@ import static org.assertj.core.api.Assertions.assertThat;
     }
 
     @Test
-     void calculatePrice_loopExecution_threeTimes() {
+    void calculatePrice_loopExecution_threeTimes() {
         MovieTicket mockTicket = Mockito.mock(MovieTicket.class);
 
-        Order order = new Order(1,false);
-        for(int i = 1; i <=3;i++) {
-            order.addSeatReservation(mockTicket);
+        Order order = new Order(1, false);
+        for (int i = 1; i <= 3; i++) {
+            order.addTicketToList(mockTicket);
         }
 
         // set up the condition for the mock ticket

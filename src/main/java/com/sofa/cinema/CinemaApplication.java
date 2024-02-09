@@ -3,54 +3,60 @@ package com.sofa.cinema;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.logging.Logger;
-
 import java.time.LocalDateTime;
-
-import static com.sofa.cinema.TicketExportFormat.JSON;
-import static com.sofa.cinema.TicketExportFormat.PLAIN_TEXT;
+import java.util.logging.Logger;
 
 @SpringBootApplication
 public class CinemaApplication {
-
-
-	public static void main(String[] args) throws Exception {
-
+	public static void main(String[] args) {
 		SpringApplication.run(CinemaApplication.class, args);
+		Logger logger = Logger.getLogger("MAIN");
 
-		final Logger logger = Logger.getLogger("MAIN");
+		// SCENARIO 1
+		logger.info("SCENARIO 1: ");
 
-		Order firstOrder = new Order(1,true);
-		Movie movie = new Movie("Batman");
-		MovieScreening movieScreening = new MovieScreening(movie, LocalDateTime.now().plusDays(4), 20.0);
-		MovieTicket movieTicket = new MovieTicket(movieScreening, false, 5, 6);
-		firstOrder.addSeatReservation(movieTicket);
+		Order firstOrder = new Order(1, true);
+		Movie firstMovie = new Movie("Batman");
+		MovieScreening firstScreening = new MovieScreening(firstMovie, LocalDateTime.now().plusDays(4), 20.0);
+		MovieTicket firstTicket = new MovieTicket(firstScreening, false, 5, 6);
 
-		firstOrder.export(PLAIN_TEXT);
-		firstOrder.export(JSON);
+		// Correct
+		firstOrder.addTicket(firstTicket);
+		firstOrder.removeTicket(firstTicket);
 
-		double price = firstOrder.calculatePrice();
-		logger.info(String.format("Price: %s", price));
-		// ----------------------------------------------------
-		// Movies
-		Movie tarzan = new Movie("Tarzan");
+		// Wrong
+		firstOrder.placeReservation();
 
-		// Screenings
-		MovieScreening tScreeningOne = new MovieScreening(tarzan, LocalDateTime.now().plusDays(4), 5.5);
+		// Correct
+		firstOrder.addTicket(firstTicket);
 
-		// Tickets
-		// Tarzan 1
-		MovieTicket tarzanTicketOne = new MovieTicket(tScreeningOne, true, 7,8 );
-		MovieTicket tarzanTicketTwo = new MovieTicket(tScreeningOne, true,7,9);
+		// Wrong
+		firstOrder.editReservation();
 
+		// Correct
+		firstOrder.placeReservation();
+		firstOrder.ignorePayment();
+		firstOrder.cancelOrder();
 
-		// Order
-		Order orderTarzan1 = new Order(1,true);
-		orderTarzan1.addSeatReservation(tarzanTicketOne);
-		orderTarzan1.addSeatReservation(tarzanTicketTwo);
+		// SCENARIO 2
+		logger.info("SCENARIO 2: ");
 
-		orderTarzan1.export(PLAIN_TEXT);
-		orderTarzan1.export(JSON);
+		Order secondOrder = new Order(1, true);
+		Movie secondMovie = new Movie("Batman");
+		MovieScreening secondScreening = new MovieScreening(secondMovie, LocalDateTime.now().plusDays(4), 20.0);
+		MovieTicket secondTicket = new MovieTicket(secondScreening, false, 5, 6);
+		MovieTicket thirdTicket = new MovieTicket(secondScreening, false, 5, 7);
 
+		// Correct
+		secondOrder.addTicket(secondTicket);
+		secondOrder.removeTicket(secondTicket);
+		secondOrder.addTicket(thirdTicket);
+
+		// Wrong
+		secondOrder.editReservation();
+
+		// Correct
+		secondOrder.placeReservation();
+		secondOrder.payOrder();
 	}
 }

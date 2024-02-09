@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.sofa.cinema.errors.ExportException;
+import com.sofa.cinema.states.*;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -17,19 +18,83 @@ public class Order {
     private boolean isStudentOrder;
     private ArrayList<MovieTicket> movieTickets;
     // Create a logger for the Order class
-    private static final Logger logger = Logger.getLogger("ORDER");
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
+
+//    private final IOrderState HAS_TICKETS;
+//    private final IOrderState NO_TICKET;
+//    private final IOrderState PLACED_RESERVATION;
+//    private final IOrderState FULLY_PROCESSED;
+//    private final IOrderState FULL_DAY_LEFT;
+//    private final IOrderState HALF_DAY_LEFT;
+
+    private IOrderState _currentState;
+    private IOrderState _previousState;
+    private boolean payed = false;
+    private boolean submitted = false;
+    private boolean cancelled = false;
+
     public Order(int orderNr, boolean isStudentOrder) {
         this.orderNr = orderNr;
         this.isStudentOrder = isStudentOrder;
         this.movieTickets = new ArrayList<MovieTicket>();
+
+        this.set_currentState(new NoTicketState(this));
     }
 
     public int getOrderNr() {
         return this.orderNr;
     }
 
-    public void addSeatReservation(MovieTicket ticket) {
+    public IOrderState get_currentState() {
+        return _currentState;
+    }
+
+    public IOrderState get_previousState() {
+        return _previousState;
+    }
+
+    public boolean isPayed() {
+        return payed;
+    }
+
+    public boolean isSubmitted() {
+        return submitted;
+    }
+
+    public boolean isCancelled() {
+        return cancelled;
+    }
+
+    public void set_currentState(IOrderState currentState) {
+        this._currentState = currentState;
+    }
+
+    public void set_previousState(IOrderState previousState) {
+        this._previousState = previousState;
+    }
+
+    public void setPayed(boolean payed) {
+        this.payed = payed;
+    }
+
+    public void setSubmitted(boolean submitted) {
+        this.submitted = submitted;
+    }
+
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
+    }
+
+    public void addTicketToList(MovieTicket ticket) {
         this.movieTickets.add(ticket);
+    }
+
+    public void removeTicketFromList(MovieTicket ticket) {
+        this.movieTickets.remove(ticket);
+    }
+
+    public int getMovieticketSize() {
+        return movieTickets.size();
     }
 
     public double calculatePrice() {
@@ -78,12 +143,12 @@ public class Order {
                 exportToPlainText();
                 break;
             default:
-            logger.info("Unsupported export format");
+                logger.info("Unsupported export format");
         }
     }
 
     private void exportToPlainText() throws ExportException {
-        try (BufferedWriter br = new BufferedWriter(new FileWriter("src/main/java/com/sofa/cinema/exports/order.txt"))){
+        try (BufferedWriter br = new BufferedWriter(new FileWriter("src/main/java/com/sofa/cinema/exports/order.txt"))) {
             StringBuilder plainText = new StringBuilder("Order Number: " + this.orderNr + "\n");
             plainText.append("Is Student Order: ").append(this.isStudentOrder).append("\n");
             plainText.append("Movie Tickets:\n");
@@ -97,7 +162,7 @@ public class Order {
     }
 
     private void exportToJson() throws ExportException {
-        try (FileWriter writer = new FileWriter("src/main/java/com/sofa/cinema/exports/order.json")){
+        try (FileWriter writer = new FileWriter("src/main/java/com/sofa/cinema/exports/order.json")) {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.enable(SerializationFeature.INDENT_OUTPUT); // Enable pretty-printing
             objectMapper.registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule());
@@ -105,5 +170,34 @@ public class Order {
         } catch (IOException e) {
             throw new ExportException("Error exporting to JSON", e);
         }
+    }
+
+    // State controllers methods
+    public void addTicket(MovieTicket ticket) {
+        this._currentState.addTicket(ticket);
+    }
+
+    public void removeTicket(MovieTicket ticket) {
+        this._currentState.removeTicket(ticket);
+    }
+
+    public void editReservation() {
+        this._currentState.editReservation();
+    }
+
+    public void placeReservation() {
+        this._currentState.placeReservation();
+    }
+
+    public void payOrder() {
+        this._currentState.payOrder();
+    }
+
+    public void cancelOrder() {
+        this._currentState.cancelOrder();
+    }
+
+    public void ignorePayment() {
+        this._currentState.ignorePayment();
     }
 }
