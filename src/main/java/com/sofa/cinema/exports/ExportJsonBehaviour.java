@@ -1,4 +1,4 @@
-package com.sofa.cinema.behaviour;
+package com.sofa.cinema.exports;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

@@ -1,4 +1,4 @@
-package com.sofa.cinema.behaviour;
+package com.sofa.cinema.exports;
 
 import com.sofa.cinema.Order;
 import com.sofa.cinema.errors.ExportException;

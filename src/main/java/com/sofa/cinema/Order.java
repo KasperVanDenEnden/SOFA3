@@ -1,10 +1,12 @@
 package com.sofa.cinema;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.sofa.cinema.behaviour.*;
+import com.sofa.cinema.Rules.*;
 import com.sofa.cinema.errors.ExportException;
+import com.sofa.cinema.exports.ExportBehaviour;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
@@ -13,21 +15,16 @@ public class Order {
     private boolean isStudentOrder;
     private ArrayList<MovieTicket> movieTickets;
 
-    private PriceRuleBehaviour priceRuleBehaviourPremium;
-    private PriceRuleBehaviour priceRuleBehaviourDiscount;
-    private PriceRuleBehaviour priceRuleBehaviourFree;
+    private List<PriceRuleBehaviour> ticketPriceRules;
 
     // Create a logger for the Order class
     private static final Logger logger = Logger.getLogger("ORDER");
 
-    public Order(int orderNr, boolean isStudentOrder) {
+    public Order(int orderNr, boolean isStudentOrder, List<PriceRuleBehaviour> ticketPriceRules) {
         this.orderNr = orderNr;
         this.isStudentOrder = isStudentOrder;
         this.movieTickets = new ArrayList<MovieTicket>();
-
-        priceRuleBehaviourPremium = null;
-        priceRuleBehaviourDiscount = null;
-        priceRuleBehaviourFree = null;
+        this.ticketPriceRules = ticketPriceRules;
     }
 
     public int getOrderNr() {
@@ -50,37 +47,18 @@ public class Order {
         behaviour.export(this);
     }
 
-    public void setPremiumFeeBehaviour(MovieTicket ticket, boolean isPremium, boolean isStudentOrder) {
-        this.priceRuleBehaviourPremium = new PremiumFeeBehaviour(ticket, isPremium, isStudentOrder);
-    }
-
-    public void setDiscountBehaviour(int totalTickets, MovieTicket ticket, double ticketPrice, boolean isStudentOrder) {
-        int dayNumber = ticket.getDateAndTime().getDayOfWeek().getValue();
-        this.priceRuleBehaviourDiscount = new DiscountBehaviour(totalTickets, dayNumber, ticketPrice, isStudentOrder);
-    }
-
-    public void setFreeBehaviour(int ticketIndex, boolean isStudentOrder, MovieTicket ticket) {
-        this.priceRuleBehaviourFree = new FreeBehaviour(ticketIndex, isStudentOrder, ticket);
-    }
-
     public double calculatePrice() {
         double totalPrice = 0;
 
         for (int i = 0; i < movieTickets.size(); i++) {
             MovieTicket ticket = movieTickets.get(i);
+            var ticketPrice = ticket.getPrice();
 
-            this.setFreeBehaviour(i, isStudentOrder, ticket);
-            double amount = this.priceRuleBehaviourFree.getPriceRule();
-            if (amount == 0) continue;
-
-            boolean isPremium = ticket.isPremiumTicket();
-
-            this.setPremiumFeeBehaviour(ticket, isPremium, isStudentOrder);
-            double ticketPrice = this.priceRuleBehaviourPremium.getPriceRule();
-
-            this.setDiscountBehaviour(movieTickets.size(), ticket, ticketPrice, isStudentOrder);
-            ticketPrice = this.priceRuleBehaviourDiscount.getPriceRule();
-
+            for (PriceRuleBehaviour priceRule : ticketPriceRules) {
+                // Your code to process each PriceRuleBehaviour instance
+                if(ticketPrice > 0.0)
+                    ticketPrice = priceRule.getPriceRule(ticketPrice,i,ticket,this);
+            }
             totalPrice += ticketPrice;
         }
 

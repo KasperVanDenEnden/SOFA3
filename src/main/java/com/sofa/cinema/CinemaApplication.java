@@ -1,10 +1,13 @@
 package com.sofa.cinema;
 
-import com.sofa.cinema.behaviour.ExportJsonBehaviour;
-import com.sofa.cinema.behaviour.ExportPlainTextBehaviour;
+import com.sofa.cinema.Rules.PriceRuleBehaviour;
+import com.sofa.cinema.exports.ExportJsonBehaviour;
+import com.sofa.cinema.exports.ExportPlainTextBehaviour;
+import com.sofa.cinema.tools.AssemblyScanner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import java.time.LocalDateTime;
@@ -17,8 +20,12 @@ public class CinemaApplication {
 
 		final Logger logger = Logger.getLogger("MAIN");
 
+		List<PriceRuleBehaviour> priceRuleBehaviours = AssemblyScanner.getInstancesOfType(PriceRuleBehaviour.class);
+
+
+
 		// First order
-		Order firstOrder = new Order(1,true);
+		Order firstOrder = new Order(1,true, priceRuleBehaviours);
 		// First movie
 		Movie movie = new Movie("Batman");
 		// First Batman screening
@@ -43,7 +50,7 @@ public class CinemaApplication {
  		MovieTicket tarzanTicketOne = new MovieTicket(tScreeningOne, true, 7,8 );
  		MovieTicket tarzanTicketTwo = new MovieTicket(tScreeningOne, true,7,9);
  		// Second order
- 		Order orderTarzan1 = new Order(2,true);
+ 		Order orderTarzan1 = new Order(2,true, priceRuleBehaviours);
  		orderTarzan1.addSeatReservation(tarzanTicketOne);
  		orderTarzan1.addSeatReservation(tarzanTicketTwo);
         // Export
