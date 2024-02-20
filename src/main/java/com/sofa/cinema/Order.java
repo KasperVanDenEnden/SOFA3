@@ -23,7 +23,6 @@ public class Order extends Observable {
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     private MessageService messageService;
-    private final Medium medium;
 
 //    private final IOrderState HAS_TICKETS;
 //    private final IOrderState NO_TICKET;
@@ -38,13 +37,12 @@ public class Order extends Observable {
     private boolean submitted = false;
     private boolean cancelled = false;
 
-    public Order(int orderNr, boolean isStudentOrder, MessageService messageService, Medium medium) {
+    public Order(int orderNr, boolean isStudentOrder, MessageService messageService) {
        this.orderNr = orderNr;
        this.isStudentOrder = isStudentOrder;
        this.movieTickets = new ArrayList<MovieTicket>();
        this.messageService = messageService;
-       this.medium = medium;
-
+   
        this.set_currentState(new NoTicketState(this));
    }
 
@@ -215,6 +213,6 @@ public class Order extends Observable {
     }
 
     public void sendMessage() {
-        this.messageService.sendMessage(this.medium);
+        this.messageService.sendMessage();
     }
 }

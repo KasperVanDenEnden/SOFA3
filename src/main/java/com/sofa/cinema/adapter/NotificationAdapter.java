@@ -1,17 +1,16 @@
 package com.sofa.cinema.adapter;
 
-import com.sofa.cinema.Medium;
-import com.sofa.cinema.notificationLibrary.Library;
+import com.sofa.cinema.notificationLibrary.ILibrary;
 
 public class NotificationAdapter implements INotification {
-    private Library library;
+    private ILibrary ILibrary;
 
-    public NotificationAdapter(Library library) {
-        this.library = library;
+    public NotificationAdapter(ILibrary ILibrary) {
+        this.ILibrary = ILibrary;
     }
 
     @Override
-    public void sendMessage(Medium medium) {
-        this.library.sendNotification(medium.toString());
+    public void sendMessage() {
+        this.ILibrary.sendNotification();
     }
 }
