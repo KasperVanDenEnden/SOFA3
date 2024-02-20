@@ -52,6 +52,7 @@ public class FullyProcessedState implements IOrderState, Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        // notification service call
+        Order order = (Order) o;
+        order.sendMessage();
     }
 }
