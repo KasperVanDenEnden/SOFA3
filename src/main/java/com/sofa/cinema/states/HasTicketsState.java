@@ -43,7 +43,7 @@ public class HasTicketsState implements IOrderState {
 
         this.order.set_previousState(this);
         this.order.set_currentState(new PlacedReservationState(this.order));
-
+        
         logger.info("The reservation has been placed according to this order!");
     }
 
@@ -57,7 +57,7 @@ public class HasTicketsState implements IOrderState {
         this.order.setCancelled(true);
 
         this.order.set_previousState(this);
-        this.order.set_currentState(new CancelState());
+        this.order.set_currentState(new CancelState(this.order));
 
         logger.info("This order has been cancelled!");
     }

@@ -1,15 +1,20 @@
 package com.sofa.cinema.states;
 
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Logger;
 import com.sofa.cinema.MovieTicket;
 import com.sofa.cinema.Order;
+import com.sofa.cinema.adapter.MessageService;
 
-public class PlacedReservationState implements IOrderState {
+public class PlacedReservationState implements IOrderState, Observer {
     private Order order;
+    private MessageService message;
     final Logger logger = Logger.getLogger(this.getClass().getName());
 
     public PlacedReservationState(Order order) {
         this.order = order;
+        order.addObserver(this);
     }
 
     @Override
@@ -42,7 +47,7 @@ public class PlacedReservationState implements IOrderState {
         this.order.setPayed(true);
 
         this.order.set_previousState(this);
-        this.order.set_currentState(new FullyProcessedState());
+        this.order.set_currentState(new FullyProcessedState(this.order));
 
         logger.info("This order has been payed!");
     }
@@ -51,7 +56,7 @@ public class PlacedReservationState implements IOrderState {
     public void cancelOrder() {
         this.order.setCancelled(true);
 
-        this.order.set_currentState(new CancelState());
+        this.order.set_currentState(new CancelState(this.order));
         this.order.set_previousState(this);
 
         logger.info("This order has been cancelled!");
@@ -63,5 +68,11 @@ public class PlacedReservationState implements IOrderState {
         this.order.set_currentState(new FullDayLeftState(this.order));
 
         logger.info("There are only 24 hours left until screening!");
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        Order order = (Order) o;
+        order.sendMessage();
     }
 }

@@ -1,10 +1,14 @@
 package com.sofa.cinema.states;
 
 import java.util.logging.Logger;
+
 import com.sofa.cinema.MovieTicket;
 import com.sofa.cinema.Order;
 
-public class FullDayLeftState implements IOrderState {
+import java.util.Observable;
+import java.util.Observer;
+
+public class FullDayLeftState implements IOrderState, Observer {
     private Order order;
 
     final Logger logger = Logger.getLogger(this.getClass().getName());
@@ -45,7 +49,7 @@ public class FullDayLeftState implements IOrderState {
         logger.info("Order has been payed");
 
         this.order.set_previousState(this);
-        this.order.set_currentState(new FullyProcessedState());
+        this.order.set_currentState(new FullyProcessedState(this.order));
 
         logger.info("This order has already a placed reservation");
     }
@@ -55,7 +59,7 @@ public class FullDayLeftState implements IOrderState {
         this.order.setCancelled(true);
 
         this.order.set_previousState(this);
-        this.order.set_currentState(new CancelState());
+        this.order.set_currentState(new CancelState(this.order));
 
         logger.info("Order has been cancelled!");
     }
@@ -66,5 +70,10 @@ public class FullDayLeftState implements IOrderState {
         this.order.set_currentState(new HalfDayLeftState(this.order));
 
         logger.info("There are only 12 hours left until screening!");
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        // notification service call
     }
 }

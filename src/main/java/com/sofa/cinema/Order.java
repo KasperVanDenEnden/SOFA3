@@ -3,6 +3,7 @@ package com.sofa.cinema;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.sofa.cinema.adapter.MessageService;
 import com.sofa.cinema.errors.ExportException;
 import com.sofa.cinema.states.*;
 
@@ -10,15 +11,19 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Observable;
 import java.util.logging.Logger;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class Order {
+public class Order extends Observable {
     private int orderNr;
     private boolean isStudentOrder;
     private ArrayList<MovieTicket> movieTickets;
     // Create a logger for the Order class
     private final Logger logger = Logger.getLogger(this.getClass().getName());
+
+    private MessageService messageService;
+    private final Medium medium;
 
 //    private final IOrderState HAS_TICKETS;
 //    private final IOrderState NO_TICKET;
@@ -33,13 +38,15 @@ public class Order {
     private boolean submitted = false;
     private boolean cancelled = false;
 
-    public Order(int orderNr, boolean isStudentOrder) {
-        this.orderNr = orderNr;
-        this.isStudentOrder = isStudentOrder;
-        this.movieTickets = new ArrayList<MovieTicket>();
+    public Order(int orderNr, boolean isStudentOrder, MessageService messageService, Medium medium) {
+       this.orderNr = orderNr;
+       this.isStudentOrder = isStudentOrder;
+       this.movieTickets = new ArrayList<MovieTicket>();
+       this.messageService = messageService;
+       this.medium = medium;
 
-        this.set_currentState(new NoTicketState(this));
-    }
+       this.set_currentState(new NoTicketState(this));
+   }
 
     public int getOrderNr() {
         return this.orderNr;
@@ -67,10 +74,16 @@ public class Order {
 
     public void set_currentState(IOrderState currentState) {
         this._currentState = currentState;
+
+        setChanged();
+        notifyObservers();
     }
 
     public void set_previousState(IOrderState previousState) {
         this._previousState = previousState;
+
+        setChanged();
+        notifyObservers();
     }
 
     public void setPayed(boolean payed) {
@@ -199,5 +212,9 @@ public class Order {
 
     public void ignorePayment() {
         this._currentState.ignorePayment();
+    }
+
+    public void sendMessage() {
+        this.messageService.sendMessage(this.medium);
     }
 }

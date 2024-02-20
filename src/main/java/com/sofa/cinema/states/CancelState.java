@@ -1,11 +1,20 @@
 package com.sofa.cinema.states;
 
 import com.sofa.cinema.MovieTicket;
+import com.sofa.cinema.Order;
 
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Logger;
 
-public class CancelState implements IOrderState {
+public class CancelState implements IOrderState, Observer {
+        private Order order;
     private final Logger logger = Logger.getLogger(this.getClass().getName());
+
+    public CancelState(Order order) {
+        this.order = order;
+        order.addObserver(this);
+    }
 
     @Override
     public void addTicket(MovieTicket ticket) {
@@ -41,4 +50,9 @@ public class CancelState implements IOrderState {
     public void ignorePayment() {
         logger.info("Can't ignore payment, because order is cancelled!");
     }
+
+     @Override
+     public void update(Observable o, Object arg) {
+        // notification service call
+     }
 }

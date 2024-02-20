@@ -1,11 +1,19 @@
 package com.sofa.cinema.states;
 
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Logger;
 
 import com.sofa.cinema.MovieTicket;
+import com.sofa.cinema.Order;
 
-public class FullyProcessedState implements IOrderState {
+public class FullyProcessedState implements IOrderState, Observer {
     final Logger logger = Logger.getLogger(this.getClass().getName());
+    private Order order;
+
+    public FullyProcessedState(Order order) {
+        this.order = order;
+    }
 
     @Override
     public void addTicket(MovieTicket ticket) {
@@ -40,5 +48,10 @@ public class FullyProcessedState implements IOrderState {
     @Override
     public void ignorePayment() {
         logger.info("Can't ignore payment, because order is fully processed!");
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        // notification service call
     }
 }
