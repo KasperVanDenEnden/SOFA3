@@ -17,7 +17,7 @@ public class CinemaApplication {
 		Logger logger = Logger.getLogger("MAIN");
 
         // Adapter
-        Library library = new Library();
+        Library library = new Library(Logger.getLogger(Library.class.getName()));
         INotification notificationAdapter = new NotificationAdapter(library);
         MessageService messageService = new MessageService(notificationAdapter);
 
