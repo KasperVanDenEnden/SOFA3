@@ -24,6 +24,10 @@ public class MovieScreening {
         return dateAndTime;
     }
 
+    public Movie getMovie() {
+        return this.movie;
+    }
+
     @Override
     public String toString() {
         return dateAndTime + " " + pricePerSeat;

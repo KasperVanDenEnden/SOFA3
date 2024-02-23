@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.sofa.cinema.adapter.MessageService;
 import com.sofa.cinema.errors.ExportException;
 import com.sofa.cinema.states.*;
+import com.sofa.cinema.template.StateMessage;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -17,6 +18,7 @@ import java.util.logging.Logger;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class Order extends Observable {
     private int orderNr;
+    private Person person;
     private boolean isStudentOrder;
     private ArrayList<MovieTicket> movieTickets;
     // Create a logger for the Order class
@@ -37,8 +39,9 @@ public class Order extends Observable {
     private boolean submitted = false;
     private boolean cancelled = false;
 
-    public Order(int orderNr, boolean isStudentOrder, MessageService messageService) {
+    public Order(int orderNr, Person person, boolean isStudentOrder, MessageService messageService) {
        this.orderNr = orderNr;
+       this.person = person;
        this.isStudentOrder = isStudentOrder;
        this.movieTickets = new ArrayList<MovieTicket>();
        this.messageService = messageService;
@@ -56,6 +59,10 @@ public class Order extends Observable {
 
     public IOrderState get_previousState() {
         return _previousState;
+    }
+
+    public Person getPerson() {
+        return person;
     }
 
     public boolean isPayed() {
@@ -79,9 +86,6 @@ public class Order extends Observable {
 
     public void set_previousState(IOrderState previousState) {
         this._previousState = previousState;
-
-        setChanged();
-        notifyObservers();
     }
 
     public void setPayed(boolean payed) {
@@ -106,6 +110,10 @@ public class Order extends Observable {
 
     public int getMovieticketSize() {
         return movieTickets.size();
+    }
+
+    public MovieTicket getOneTicket() {
+        return this.movieTickets.getFirst();
     }
 
     public double calculatePrice() {
@@ -212,7 +220,7 @@ public class Order extends Observable {
         this._currentState.ignorePayment();
     }
 
-    public void sendMessage() {
-        this.messageService.sendMessage();
+    public void sendMessage(StateMessage message) {
+        this.messageService.sendMessage(message);
     }
 }

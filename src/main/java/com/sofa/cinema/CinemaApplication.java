@@ -30,7 +30,9 @@ public class CinemaApplication {
         // SCENARIO 1
         logger.info("SCENARIO 1: ");
 
-        Order firstOrder = new Order(1, true, messageService);
+        Person firstPerson = new Person("Kasper", "kasper@test.nl", "06-12345678");
+
+        Order firstOrder = new Order(1, firstPerson, true, messageService);
         Movie firstMovie = new Movie("Batman");
         MovieScreening firstScreening = new MovieScreening(firstMovie, LocalDateTime.now().plusDays(4), 20.0);
         MovieTicket firstTicket = new MovieTicket(firstScreening, false, 5, 6);
@@ -56,7 +58,9 @@ public class CinemaApplication {
         // SCENARIO 2
         logger.info("SCENARIO 2: ");
 
-        Order secondOrder = new Order(1, true, messageService2);
+        Person secondPerson = new Person("Guus", "guus@test.nl", "06-23456789");
+
+        Order secondOrder = new Order(2,secondPerson, true, messageService2);
         Movie secondMovie = new Movie("Batman");
         MovieScreening secondScreening = new MovieScreening(secondMovie, LocalDateTime.now().plusDays(4), 20.0);
         MovieTicket secondTicket = new MovieTicket(secondScreening, false, 5, 6);

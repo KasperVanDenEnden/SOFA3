@@ -1,5 +1,7 @@
 package com.sofa.cinema.notificationLibrary;
 
+import com.sofa.cinema.template.StateMessage;
+
 public interface ILibrary {
-    public void sendNotification();
+    void sendNotification(StateMessage message);
 }

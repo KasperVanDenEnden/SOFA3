@@ -16,7 +16,7 @@ public class NoTicketState implements IOrderState {
     public void addTicket(MovieTicket ticket) {
         this.order.addTicketToList(ticket);
 
-        order.set_previousState(this); 
+//         order.set_previousState(this);
         order.set_currentState(new HasTicketsState(this.order));
 
         logger.info("The ticket had been added to the order!");
@@ -46,8 +46,8 @@ public class NoTicketState implements IOrderState {
     public void cancelOrder() {
         this.order.setCancelled(true);
 
+//         this.order.set_previousState(this);
         this.order.set_currentState(new CancelState(this.order));
-        this.order.set_previousState(this);
 
         logger.info("This order has been cancelled!");
     }

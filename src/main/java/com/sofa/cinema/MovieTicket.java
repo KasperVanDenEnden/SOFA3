@@ -31,6 +31,10 @@ public class MovieTicket {
         return this.screening.getDateAndTime();
     }
 
+    public MovieScreening getMovieScreening() {
+        return this.screening;
+    }
+
     public String toString() {
         return "Row: " + rowNr + "& Seat: " + seatNr + "(Premium: " + isPremium + ")";
     }

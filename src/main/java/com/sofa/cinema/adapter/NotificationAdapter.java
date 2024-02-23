@@ -1,6 +1,7 @@
 package com.sofa.cinema.adapter;
 
 import com.sofa.cinema.notificationLibrary.ILibrary;
+import com.sofa.cinema.template.StateMessage;
 
 public class NotificationAdapter implements INotification {
     private ILibrary ILibrary;
@@ -10,7 +11,7 @@ public class NotificationAdapter implements INotification {
     }
 
     @Override
-    public void sendMessage() {
-        this.ILibrary.sendNotification();
+    public void sendMessage(StateMessage message) {
+        this.ILibrary.sendNotification(message);
     }
 }

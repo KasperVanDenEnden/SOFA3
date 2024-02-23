@@ -41,8 +41,8 @@ public class HalfDayLeftState implements IOrderState {
     public void cancelOrder() {
         this.order.setCancelled(true);
 
+//         this.order.set_previousState(this);
         this.order.set_currentState(new CancelState(this.order));
-        this.order.set_previousState(this);
 
         logger.info("This order has been cancelled!");
     }

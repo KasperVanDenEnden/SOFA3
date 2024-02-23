@@ -25,8 +25,8 @@ public class HasTicketsState implements IOrderState {
 
         // If no Tickets? Go back to noTicketState
         if (this.order.getMovieticketSize() == 0) {
-            order.set_currentState(this.order.get_previousState());
-            order.set_previousState(this);
+            order.set_currentState(new NoTicketState(this.order));
+//             order.set_previousState(this);
         }
         logger.info("The ticket had been removed from the order!");
     }
@@ -41,9 +41,10 @@ public class HasTicketsState implements IOrderState {
         this.order.setSubmitted(true);
         this.order.setPayed(false);
 
-        this.order.set_previousState(this);
+//         this.order.set_previousState(this);
+
         this.order.set_currentState(new PlacedReservationState(this.order));
-        
+
         logger.info("The reservation has been placed according to this order!");
     }
 
@@ -56,7 +57,7 @@ public class HasTicketsState implements IOrderState {
     public void cancelOrder() {
         this.order.setCancelled(true);
 
-        this.order.set_previousState(this);
+//         this.order.set_previousState(this);
         this.order.set_currentState(new CancelState(this.order));
 
         logger.info("This order has been cancelled!");
